@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using WixSharp;
 using WixSharp.UI.WPF;
 
 namespace ModularDemo_Setup
 {
-    internal class Program
+    public static class Program
     {
         static void Main()
         {
@@ -13,6 +15,7 @@ namespace ModularDemo_Setup
             var module1 = new Feature("Modulo 1");
             var module2 = new Feature("Modulo 2");
             var shell = new Feature("Shell");
+
 
             var project = new ManagedProject("ModularDemo Setup",
                               new Dir(@"%ProgramFiles%\EMSI FARMA\ModularDemo Setup",
@@ -53,49 +56,34 @@ namespace ModularDemo_Setup
             project.BuildMsi();
         }
 
-       // static void project_BeforeInstall(SetupEventArgs e)
-      //  {
-       //     MessageBox.Show(e.Session.GetMainWindow(), e.ToString(), "BeforeInstall");
-       // }
+        
 
         static void project_UIInit(SetupEventArgs e)
         {
-            MessageBox.Show(e.Session.GetMainWindow(), "Hello World! (CLR: v" + Environment.Version + ")", "Managed Setup - UIInit");
+            string registry_key = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+            List<string> matches = new List<string>();
+            Microsoft.Win32.RegistryKey sub_key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key);
 
-            //set custom installdir
-            //This event is fired before Wix# ManagedUI loaded (disabled for demo purposes)
-            //e.Session["INSTALLDIR"] = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\7-Zip")
-            //                                              .GetValue("Path")
-            //                                              .ToString();
+            
 
-  
-        }
-
-        string rutaEnElRegistro = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
-
-        private string BuscarVersionInstalada(string displayName, string publisher)
-        {
-            Microsoft.Win32.RegistryKey clave = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(rutaEnElRegistro);
-            foreach (var skname in clave.GetSubKeyNames())
+            foreach (var skname in sub_key.GetSubKeyNames())
             {
-                Microsoft.Win32.RegistryKey productKey = key.OpenSubKey(skname);
+
+                Microsoft.Win32.RegistryKey productKey = sub_key.OpenSubKey(skname);
                 if (productKey != null)
                 {
-                    string keyValue = Convert.ToString(productKey.GetValue("Publisher"));
-                    if (!keyValue.Equals(publisher, StringComparison.OrdinalIgnoreCase))
-                        continue;
+                    string programName = Convert.ToString(productKey.GetValue("DisplayName"));
 
-                    string productName = Convert.ToString(productKey.GetValue("DisplayName"));
-                    if (!productName.Equals(displayName, StringComparison.OrdinalIgnoreCase))
-                        continue;
-
-                    string displayVersion = Convert.ToString(productKey.GetValue("DisplayVersion"));
-
-                    return displayVersion;
+                    if (programName.Contains(".NET"))
+                    {
+                        matches.Add(programName);
+                    }
                 }
+
             }
 
-            return null;
+            MessageBox.Show(e.Session.GetMainWindow(), "Matches " + matches.Count(), "Managed Setup - UIInit");
+
         }
     }
 }
