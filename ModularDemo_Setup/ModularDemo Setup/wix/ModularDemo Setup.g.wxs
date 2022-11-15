@@ -101,8 +101,24 @@
                 <File Id="Module2.pdb_3278296043" Source="Modulo2\Module2.pdb" />
               </Component>
 
+              <Component Id="Component.Uninstall20MyApp" Guid="6fe30b47-2577-43ad-9095-1861436db81f">
+                <Shortcut Id="INSTALLDIR.Modules.Uninstall20MyApp" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Uninstall MyApp.lnk" />
+
+                <CreateFolder />
+                <RemoveFolder Id="INSTALLDIR.Modules" On="uninstall" />
+
+                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
+                </RegistryKey>
+              </Component>
+
             </Directory>
           </Directory>
+
+          <Component Id="ProgramFilesFolder.EMSI20FARMA" Guid="6fe30b47-2577-43ad-9095-1861fb28a87b" KeyPath="yes">
+            <RemoveFolder Id="ProgramFilesFolder.EMSI20FARMA" On="uninstall" />
+          </Component>
+
         </Directory>
       </Directory>
     </Directory>
@@ -130,6 +146,7 @@
     <Property Id="UAC_WARNING" Value="Please wait for UAC prompt to appear.&#xD;&#xA;&#xD;&#xA;If it appears minimized then activate it from the taskbar." />
     <Property Id="WixSharp_InstallDialogs" Value="ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.WelcomeDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.LicenceDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.FeaturesDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.InstallDirDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ProgressDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ExitDialog" />
     <Property Id="WixSharp_ModifyDialogs" Value="ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.MaintenanceTypeDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.FeaturesDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ProgressDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ExitDialog" />
+    <Property Id="WixSharp_UILoaded_Handlers" Value="ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.Program|project_UIInit" />
 
     <Feature Id="Shell" Title="Shell" Absent="allow" Level="1">
       <ComponentRef Id="Component.Microsoft.Xaml.Behaviors.dll_1344862744" />
@@ -145,23 +162,28 @@
       <ComponentRef Id="Component.Prism.Wpf.dll_3168338345" />
       <ComponentRef Id="Component.Unity.Abstractions.dll_838342406" />
       <ComponentRef Id="Component.Unity.Container.dll_4085583569" />
+      <ComponentRef Id="ProgramFilesFolder.EMSI20FARMA" />
     </Feature>
 
     <Feature Id="Modulo201_" Title="Modulo 1" Absent="allow" Level="1">
       <ComponentRef Id="Component.Module1.deps.json_754598630" />
       <ComponentRef Id="Component.Module1.dll_3918451735" />
       <ComponentRef Id="Component.Module1.pdb_94950431" />
+      <ComponentRef Id="ProgramFilesFolder.EMSI20FARMA" />
     </Feature>
 
     <Feature Id="Modulo202_" Title="Modulo 2" Absent="allow" Level="1">
       <ComponentRef Id="Component.Module2.deps.json_2734177194" />
       <ComponentRef Id="Component.Module2.dll_2807092211" />
       <ComponentRef Id="Component.Module2.pdb_3278296043" />
+      <ComponentRef Id="ProgramFilesFolder.EMSI20FARMA" />
     </Feature>
 
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
       <ComponentRef Id="Component.ModularDemo.Core.dll_3000436664" />
       <ComponentRef Id="Component.ModularDemo.Core.pdb_3471640496" />
+      <ComponentRef Id="Component.Uninstall20MyApp" />
+      <ComponentRef Id="ProgramFilesFolder.EMSI20FARMA" />
     </Feature>
 
     <InstallExecuteSequence>
