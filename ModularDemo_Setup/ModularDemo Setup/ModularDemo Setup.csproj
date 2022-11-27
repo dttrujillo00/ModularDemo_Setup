@@ -19,7 +19,6 @@
     <None Remove="Dialogs\LicenseAgreementDialog.xaml" />
     <None Remove="Dialogs\MaintenanceTypeDialog.xaml" />
     <None Remove="Dialogs\ProgressDialog.xaml" />
-    <None Remove="Dialogs\RequirementsDialog.xaml" />
     <None Remove="Dialogs\SetupTypeDialog.xaml" />
     <None Remove="Dialogs\WelcomeDialog.xaml" />
   </ItemGroup>
@@ -38,9 +37,6 @@
     <Page Include="Dialogs\LicenseAgreementDialog.xaml" />
     <Page Include="Dialogs\MaintenanceTypeDialog.xaml" />
     <Page Include="Dialogs\ProgressDialog.xaml" />
-    <Page Include="Dialogs\RequirementsDialog.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Dialogs\SetupTypeDialog.xaml" />
     <Page Include="Dialogs\WelcomeDialog.xaml" />
   </ItemGroup>
@@ -51,10 +47,6 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
   </ItemGroup>
 
 </Project>

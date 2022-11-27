@@ -9,10 +9,8 @@ namespace ModularDemo_Setup
 {
     public static class Program
     {
-        public static List<string> matches;
         static void Main()
         {
-            
 
             var module1 = new Feature("Modulo 1");
             var module2 = new Feature("Modulo 2");
@@ -54,6 +52,7 @@ namespace ModularDemo_Setup
             project.UILoaded += project_UIInit;
            // project.BeforeInstall += project_BeforeInstall;
 
+
             project.BuildMsi();
         }
 
@@ -62,7 +61,7 @@ namespace ModularDemo_Setup
         static void project_UIInit(SetupEventArgs e)
         {
             string registry_key = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
-            matches = new List<string>();
+            List<string> matches = new List<string>();
             Microsoft.Win32.RegistryKey sub_key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key);
 
             
