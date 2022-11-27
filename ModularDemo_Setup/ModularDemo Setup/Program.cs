@@ -35,6 +35,7 @@ namespace ModularDemo_Setup
             project.ManagedUI = new ManagedUI();
 
             project.ManagedUI.InstallDialogs.Add<ModularDemo_Setup.WelcomeDialog>()
+                                            .Add<ModularDemo_Setup.RequirementsDialog>()
                                             .Add<ModularDemo_Setup.LicenceDialog>()
                                             .Add<ModularDemo_Setup.FeaturesDialog>()
                                             .Add<ModularDemo_Setup.InstallDirDialog>()
