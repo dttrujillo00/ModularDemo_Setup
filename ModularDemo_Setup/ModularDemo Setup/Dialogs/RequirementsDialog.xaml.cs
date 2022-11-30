@@ -54,7 +54,7 @@ namespace ModularDemo_Setup
                 {
                     string programName = Convert.ToString(productKey.GetValue("DisplayName"));
 
-                    if (programName.Contains(".NET"))
+                    if (programName.Contains("Microsoft .NET Runtime"))
                     {
                         matches.Add(programName);
                     }
