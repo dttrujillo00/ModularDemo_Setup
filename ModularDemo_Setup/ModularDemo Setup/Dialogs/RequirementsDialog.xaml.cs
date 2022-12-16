@@ -1,10 +1,12 @@
 using Caliburn.Micro;
+using ModularDemo_Setup.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 using WixSharp;
 using WixSharp.UI.Forms;
 using WixSharp.UI.WPF;
+using ModularDemo_Setup.NewFolder;
 
 namespace ModularDemo_Setup
 {
@@ -23,10 +25,8 @@ namespace ModularDemo_Setup
         /// </summary>
         public RequirementsDialog()
         {
+            //DataContext = new RequirementsViewModel();
             InitializeComponent();
-            List<string> matches = new List<string>();
-            CheckList(ref matches);
-            listView.ItemsSource = matches;
         }
 
         /// <summary>
@@ -38,31 +38,7 @@ namespace ModularDemo_Setup
             ViewModelBinder.Bind(new RequirementDialogModel { Host = ManagedFormHost }, this, null);
         }
 
-        public void CheckList(ref List<string> matches)
-        {
-            string registry_key = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
-
-            Microsoft.Win32.RegistryKey sub_key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key);
-
-
-
-            foreach (var skname in sub_key.GetSubKeyNames())
-            {
-
-                Microsoft.Win32.RegistryKey productKey = sub_key.OpenSubKey(skname);
-                if (productKey != null)
-                {
-                    string programName = Convert.ToString(productKey.GetValue("DisplayName"));
-
-                    if (programName.Contains("Microsoft .NET Runtime"))
-                    {
-                        matches.Add(programName);
-                    }
-                }
-
-            }
-
-        }
+        
     }
 
     /// <summary>
@@ -76,11 +52,81 @@ namespace ModularDemo_Setup
         public ManagedForm Host;
         ISession session => Host?.Runtime.Session;
         IManagedUIShell shell => Host?.Shell;
-        public List<string> matches = new List<string>();
 
         public BitmapImage Banner => session?.GetResourceBitmap("WixUI_Bmp_Dialog").ToImageSource();
 
-        
+        /// <summary>
+        /// Listado de programas requeridos para la instalacion
+        /// </summary>
+        private BindableCollection<ItemProgram> _programList = new BindableCollection<ItemProgram>();
+
+        public BindableCollection<ItemProgram> ProgramList
+        {
+            get { return _programList; }
+            set { _programList = value; }
+        }
+
+        private string _programName;
+
+        public string ProgramName
+        {
+            get { return _programName; }
+            set { _programName = value; }
+        }
+
+        private bool _programInstalled;
+        public bool ProgramInstalled
+        {
+            get { return _programInstalled; }
+            set { 
+                _programInstalled = value;
+                NotifyOfPropertyChange(nameof(ProgramInstalled));
+            }
+        }
+
+        /// <summary>
+        /// Inicializando el listado de los programas requeridos
+        /// </summary>
+        /// <param name="view"></param>
+        protected override void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+            ProgramList.Add(new ItemProgram { Name = "Microsoft .NET Runtime", IsInstalled = false });
+            ProgramList.Add(new ItemProgram { Name = "Microsoft Visual Studio", IsInstalled = false });
+            ProgramList.Add(new ItemProgram { Name = "GitHub Desktop", IsInstalled = false });
+            CheckProgramsInstalled();
+
+            //ItemProgram x =new ItemProgram();
+            //var type = x.GetType();
+            //var property = type.GetProperties(System.Reflection.BindingFlags.Public);
+            //property[0].
+        }
+
+        protected void CheckProgramsInstalled()
+        {
+            foreach (var item in ProgramList)
+            {
+                string registry_key = "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall";
+                Microsoft.Win32.RegistryKey sub_key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(registry_key);
+
+                foreach (var skname in sub_key.GetSubKeyNames())
+                {
+
+                    Microsoft.Win32.RegistryKey productKey = sub_key.OpenSubKey(skname);
+                    if (productKey != null)
+                    {
+                        string programName = Convert.ToString(productKey.GetValue("DisplayName"));
+
+                        if (programName.Contains(item.Name))
+                        {
+                            item.IsInstalled = true;
+                        }
+                    }
+
+                }
+            }
+        }
+
 
         public bool CanGoNext() {
             return false;

@@ -31,7 +31,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <Image x:Name="Banner" Grid.RowSpan="2" Source="../EMSI_FARMA_IMG.jpg" />
                 <TextBlock
                     Grid.RowSpan="1"
                     Grid.Column="1"
@@ -54,7 +53,15 @@
                 <ListView
                     Grid.Row="2"
                     Grid.Column="1"
-                    Name="listView" ></ListView>
+                    Name="listView"
+                    ItemsSource="{Binding ProgramList}"
+                    >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <CheckBox Content="{Binding Name}" IsEnabled="False" IsChecked="{Binding IsInstalled}"></CheckBox>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </Border>
 

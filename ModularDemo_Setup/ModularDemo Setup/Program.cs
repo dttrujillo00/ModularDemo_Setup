@@ -50,7 +50,7 @@ namespace ModularDemo_Setup
             //project.SourceBaseDir = "<input dir path>";
             //project.OutDir = "<output dir path>";
 
-            project.UILoaded += project_UIInit;
+           // project.UILoaded += project_UIInit;
            // project.BeforeInstall += project_BeforeInstall;
 
 
