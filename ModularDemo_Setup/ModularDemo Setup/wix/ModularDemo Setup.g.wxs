@@ -67,15 +67,18 @@
               <File Id="Unity.Container.dll_4085583569" Source="Shell\Unity.Container.dll" />
             </Component>
 
+            <Component Id="Component.Uninstall20ModularDemo" Guid="6fe30b47-2577-43ad-9095-1861ebd56110">
+              <Shortcut Id="INSTALLDIR.Uninstall20ModularDemo" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Uninstall ModularDemo.lnk" />
+
+              <CreateFolder />
+              <RemoveFolder Id="INSTALLDIR" On="uninstall" />
+
+              <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
+                <RegistryValue Value="0" Type="string" KeyPath="yes" />
+              </RegistryKey>
+            </Component>
+
             <Directory Id="INSTALLDIR.Modules" Name="Modules">
-
-              <Component Id="Component.ModularDemo.Core.dll_3000436664" Guid="6fe30b47-2577-43ad-9095-18617869face">
-                <File Id="ModularDemo.Core.dll_3000436664" Source="Files\Modules\ModularDemo.Core.dll" />
-              </Component>
-
-              <Component Id="Component.ModularDemo.Core.pdb_3471640496" Guid="6fe30b47-2577-43ad-9095-186158d148aa">
-                <File Id="ModularDemo.Core.pdb_3471640496" Source="Files\Modules\ModularDemo.Core.pdb" />
-              </Component>
 
               <Component Id="Component.Module1.deps.json_754598630" Guid="6fe30b47-2577-43ad-9095-18619a17bbdc">
                 <File Id="Module1.deps.json_754598630" Source="Modulo1\Module1.deps.json" />
@@ -99,17 +102,6 @@
 
               <Component Id="Component.Module2.pdb_3278296043" Guid="6fe30b47-2577-43ad-9095-186115101209">
                 <File Id="Module2.pdb_3278296043" Source="Modulo2\Module2.pdb" />
-              </Component>
-
-              <Component Id="Component.Uninstall20MyApp" Guid="6fe30b47-2577-43ad-9095-1861436db81f">
-                <Shortcut Id="INSTALLDIR.Modules.Uninstall20MyApp" WorkingDirectory="System64Folder" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" Name="Uninstall MyApp.lnk" />
-
-                <CreateFolder />
-                <RemoveFolder Id="INSTALLDIR.Modules" On="uninstall" />
-
-                <RegistryKey Root="HKCU" Key="Software\WixSharp\Used">
-                  <RegistryValue Value="0" Type="string" KeyPath="yes" />
-                </RegistryKey>
               </Component>
 
             </Directory>
@@ -144,7 +136,7 @@
     <Property Id="WixSharp_UI_INSTALLDIR" Value="INSTALLDIR" />
     <Property Id="UAC_REVEALER_ENABLED" Value="true" />
     <Property Id="UAC_WARNING" Value="Please wait for UAC prompt to appear.&#xD;&#xA;&#xD;&#xA;If it appears minimized then activate it from the taskbar." />
-    <Property Id="WixSharp_InstallDialogs" Value="ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.WelcomeDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.RequirementsDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.LicenceDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.FeaturesDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.InstallDirDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ProgressDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ExitDialog" />
+    <Property Id="WixSharp_InstallDialogs" Value="ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.WelcomeDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.LicenceDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.FeaturesDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.InstallDirDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ProgressDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ExitDialog" />
     <Property Id="WixSharp_ModifyDialogs" Value="ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.MaintenanceTypeDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.FeaturesDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ProgressDialog&#xA;ModularDemo Setup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null|ModularDemo_Setup.ExitDialog" />
 
     <Feature Id="Shell" Title="Shell" Absent="allow" Level="1">
@@ -179,9 +171,7 @@
     </Feature>
 
     <Feature Id="Complete" Title="Complete" Absent="allow" Level="1">
-      <ComponentRef Id="Component.ModularDemo.Core.dll_3000436664" />
-      <ComponentRef Id="Component.ModularDemo.Core.pdb_3471640496" />
-      <ComponentRef Id="Component.Uninstall20MyApp" />
+      <ComponentRef Id="Component.Uninstall20ModularDemo" />
       <ComponentRef Id="ProgramFilesFolder.EMSI20FARMA" />
     </Feature>
 

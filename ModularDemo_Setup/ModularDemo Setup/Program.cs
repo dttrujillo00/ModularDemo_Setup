@@ -12,6 +12,10 @@ namespace ModularDemo_Setup
         static void Main()
         {
 
+            string currentDirName = System.IO.Directory.GetCurrentDirectory();
+
+            Assembly testAssembly = Assembly.LoadFile(@"c:\Test.dll");
+
             var module1 = new Feature("Modulo 1");
             var module2 = new Feature("Modulo 2");
             var shell = new Feature("Shell");
@@ -20,12 +24,10 @@ namespace ModularDemo_Setup
             var project = new ManagedProject("ModularDemo Setup",
                               new Dir(@"%ProgramFiles%\EMSI FARMA\ModularDemo Setup",
                                   new Files(shell, @"Shell\*.*"),
+                                  new ExeFileShortcut("Uninstall ModularDemo", "[System64Folder]msiexec.exe", "/x [ProductCode]"),
                                   new Dir("Modules",
-                                  new File(@"Files\Modules\ModularDemo.Core.dll"),
-                                  new File(@"Files\Modules\ModularDemo.Core.pdb"),
-                                  new Files(module1, @"Modulo1\*.*"),
-                                  new Files(module2, @"Modulo2\*.*"),
-                                   new ExeFileShortcut("Uninstall MyApp", "[System64Folder]msiexec.exe", "/x [ProductCode]"))));
+                                      new Files(module1, @"Modulo1\*.*"),
+                                      new Files(module2, @"Modulo2\*.*"))));
 
             project.GUID = new Guid("6fe30b47-2577-43ad-9095-1861ba25889b");
 
@@ -35,7 +37,7 @@ namespace ModularDemo_Setup
             project.ManagedUI = new ManagedUI();
 
             project.ManagedUI.InstallDialogs.Add<ModularDemo_Setup.WelcomeDialog>()
-                                            .Add<ModularDemo_Setup.RequirementsDialog>()
+                                            //.Add<ModularDemo_Setup.RequirementsDialog>()
                                             .Add<ModularDemo_Setup.LicenceDialog>()
                                             .Add<ModularDemo_Setup.FeaturesDialog>()
                                             .Add<ModularDemo_Setup.InstallDirDialog>()
